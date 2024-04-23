@@ -1,8 +1,8 @@
 package com.communityhub.service
 
+import com.communityhub.auth.createToken
 import com.communityhub.model.CHubUser
 import com.communityhub.repository.CHubUserRepository
-import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,18 +17,10 @@ class CHubUserService (private val cHubUserRepository: CHubUserRepository) {
 
     fun updateUserJwtToken(name: String): String {
         val user = getUser(name)
-
-        val key = Jwts.SIG.HS256.key().build()
-        val jwtToken = Jwts.builder()
-            .subject(user.name)
-            .claim("isAdmin", user.isAdmin)
-            .signWith(key)
-            .compact()
-
-        user.jwtToken = jwtToken
+        val token = createToken(name, user.isAdmin ?: false)
+        user.jwtToken = token
         cHubUserRepository.save(user)
-
-        return jwtToken
+        return token
     }
 
     fun deleteUserJwtToken(name: String) {
