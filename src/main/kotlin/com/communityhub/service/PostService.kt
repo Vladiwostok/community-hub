@@ -19,7 +19,7 @@ class PostService(
 ) {
     fun createPost(postDto: PostDto): Long {
         val community = communityService.getCommunity(postDto.communityName)
-        val user = chubUserService.getUser(postDto.name!!)
+        val user = chubUserService.getUser(postDto.author!!)
         val post = Post(null, community, user, postDto.title, postDto.content, System.currentTimeMillis())
         val newPost = postRepository.save(post)
         return newPost.id!!

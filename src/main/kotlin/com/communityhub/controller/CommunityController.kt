@@ -2,6 +2,9 @@ package com.communityhub.controller
 
 import com.communityhub.auth.decodeToken
 import com.communityhub.dto.CommunityDto
+import com.communityhub.dto.CommunityWithPostsDto
+import com.communityhub.dto.PostDto
+import com.communityhub.dto.PostWithCommentsDto
 import com.communityhub.model.Community
 import com.communityhub.service.CommunityService
 import org.springframework.http.HttpStatus
@@ -52,6 +55,23 @@ class CommunityController(private val communityService: CommunityService) {
 
         communityService.deleteCommunity(name)
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/{name}")
+    fun getPost(
+        @PathVariable name: String,
+        @RequestParam("p") commentPage: Int?
+    ): ResponseEntity<CommunityWithPostsDto> {
+        val page = commentPage ?: 0
+        return try {
+            val community = communityService.getPostsByCommunity(name, page)
+            val communityDto = CommunityDto(community.first.name, community.first.description)
+            val posts = community.second.map { PostDto(community.first.name, it.chubUser.name, it.title, it.content) }
+            val communityWithPosts = CommunityWithPostsDto(communityDto, posts)
+            ResponseEntity.ok(communityWithPosts)
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().build()
+        }
     }
 
     private fun isAdmin(jwt: String?): Boolean {

@@ -21,7 +21,7 @@ class PostController(private val postService: PostService) {
         if (userInfo.isExpired())
             return ResponseEntity.status(403).build()
 
-        postDto.name = userInfo.name
+        postDto.author = userInfo.name
 
         return try {
             val id = postService.createPost(postDto)
