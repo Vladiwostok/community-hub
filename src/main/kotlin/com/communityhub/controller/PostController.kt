@@ -3,6 +3,7 @@ package com.communityhub.controller
 import com.communityhub.auth.decodeToken
 import com.communityhub.dto.CommentDto
 import com.communityhub.dto.PostDto
+import com.communityhub.dto.PostWithCommentsDto
 import com.communityhub.service.PostService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,7 +21,7 @@ class PostController(private val postService: PostService) {
         if (userInfo.isExpired())
             return ResponseEntity.status(403).build()
 
-        postDto.chubUserName = userInfo.name
+        postDto.name = userInfo.name
 
         return try {
             val id = postService.createPost(postDto)
@@ -70,6 +71,29 @@ class PostController(private val postService: PostService) {
         return try {
             postService.deletePost(id)
             ResponseEntity.ok().build()
+        } catch (e: Exception) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @GetMapping("/{id}")
+    fun getPost(@PathVariable id: Long, @RequestParam("p") commentPage: Int?): ResponseEntity<PostWithCommentsDto> {
+        val page = commentPage ?: 0
+
+        return try {
+            val post = postService.getPostWithComments(id, page)
+            val postDto = PostDto(
+                post.first.community.name,
+                post.first.chubUser.name,
+                post.first.title,
+                post.first.content
+            )
+
+            val comments = post.second.map {
+                CommentDto(it.content, it.chubUser.name)
+            }
+
+            ResponseEntity.ok(PostWithCommentsDto(postDto, comments))
         } catch (e: Exception) {
             ResponseEntity.notFound().build()
         }
