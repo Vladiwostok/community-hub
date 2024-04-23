@@ -17,5 +17,5 @@ class CHubUser(
     @Column(nullable = false)
     val isAdmin: Boolean? = false,
     @Column(nullable = true)
-    val jwtToken: String? = null
+    var jwtToken: String? = null
 )
