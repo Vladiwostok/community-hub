@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Service
 
 @Service
-class CHubUserService (val cHubUserRepository: CHubUserRepository) {
+class CHubUserService (private val cHubUserRepository: CHubUserRepository) {
     fun saveUser(cHubUser: CHubUser) {
         cHubUserRepository.save(cHubUser)
     }
