@@ -31,9 +31,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.session:spring-session-core")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.5.0")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<KotlinCompile> {
