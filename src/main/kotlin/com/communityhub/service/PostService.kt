@@ -5,6 +5,7 @@ import com.communityhub.model.Comment
 import com.communityhub.model.Post
 import com.communityhub.repository.CommentFeedRepository
 import com.communityhub.repository.CommentRepository
+import com.communityhub.repository.PostFeedRepository
 import com.communityhub.repository.PostRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 @Service
 class PostService(
     private val postRepository: PostRepository,
+    private val postFeedRepository: PostFeedRepository,
     private val commentRepository: CommentRepository,
     private val communityService: CommunityService,
     private val chubUserService: CHubUserService,
@@ -46,5 +48,10 @@ class PostService(
     fun deletePost(id: Long) {
         val post = getPost(id)
         postRepository.delete(post)
+    }
+
+    fun getMainFeedPosts(page: Int): List<Post> {
+        val pageRequest = PageRequest.of(page, 10)
+        return postFeedRepository.findAllByOrderByDateMillisDesc(pageRequest)
     }
 }
