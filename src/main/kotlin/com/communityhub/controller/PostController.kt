@@ -17,7 +17,7 @@ class PostController(private val postService: PostService) {
     fun createPost(
         @RequestHeader("Authorization") authorization: String?,
         @RequestBody postDto: PostDto
-    ): ResponseEntity<Long> {
+    ): ResponseEntity<PostDto> {
         val token = authorization?.substringAfter("Bearer ") ?: return ResponseEntity.status(403).build()
         val userInfo = decodeToken(token)
         if (userInfo.isExpired())
@@ -27,7 +27,8 @@ class PostController(private val postService: PostService) {
 
         return try {
             val id = postService.createPost(postDto)
-            ResponseEntity.ok(id)
+            val post = PostDto(id, postDto.communityName, postDto.author, postDto.title, postDto.content)
+            ResponseEntity.ok(post)
         } catch (e: Exception) {
             ResponseEntity.badRequest().build()
         }
