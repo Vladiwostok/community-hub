@@ -87,6 +87,7 @@ class PostController(private val postService: PostService) {
         return try {
             val post = postService.getPostWithComments(id, page)
             val postDto = PostDto(
+                post.first.id,
                 post.first.community.name,
                 post.first.chubUser.name,
                 post.first.title,

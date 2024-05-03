@@ -69,7 +69,7 @@ class CommunityController(private val communityService: CommunityService) {
         return try {
             val community = communityService.getPostsByCommunity(name, page)
             val communityDto = CommunityDto(community.first.name, community.first.description)
-            val posts = community.second.map { PostDto(community.first.name, it.chubUser.name, it.title, it.content) }
+            val posts = community.second.map { PostDto(it.id, community.first.name, it.chubUser.name, it.title, it.content) }
             val communityWithPosts = CommunityWithPostsDto(communityDto, posts)
             ResponseEntity.ok(communityWithPosts)
         } catch (e: Exception) {

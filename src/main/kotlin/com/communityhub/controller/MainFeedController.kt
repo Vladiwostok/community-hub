@@ -14,6 +14,6 @@ class MainFeedController(private val postService: PostService) {
     fun getMainFeed(@RequestParam("p") commentPage: Int?): List<PostDto> {
         val page = commentPage ?: 0
         return postService.getMainFeedPosts(page)
-            .map { PostDto(it.community.name, it.chubUser.name, it.title, it.content) }
+            .map { PostDto(it.id, it.community.name, it.chubUser.name, it.title, it.content) }
     }
 }
