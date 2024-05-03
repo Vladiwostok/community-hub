@@ -4,9 +4,9 @@ import com.communityhub.auth.decodeToken
 import com.communityhub.dto.CommunityDto
 import com.communityhub.dto.CommunityWithPostsDto
 import com.communityhub.dto.PostDto
-import com.communityhub.dto.PostWithCommentsDto
 import com.communityhub.model.Community
 import com.communityhub.service.CommunityService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,6 +20,7 @@ class CommunityController(private val communityService: CommunityService) {
     }
 
     @PostMapping("/create")
+    @SecurityRequirement(name = "JWT Access Token")
     fun createCommunity(
         @RequestHeader("Authorization") authorization: String?,
         @RequestBody communityDto: CommunityDto
@@ -33,6 +34,7 @@ class CommunityController(private val communityService: CommunityService) {
     }
 
     @PutMapping("/update/{name}")
+    @SecurityRequirement(name = "JWT Access Token")
     fun updateCommunity(
         @RequestHeader("Authorization") authorization: String?,
         @PathVariable name: String,
@@ -46,6 +48,7 @@ class CommunityController(private val communityService: CommunityService) {
     }
 
     @DeleteMapping("/delete/{name}")
+    @SecurityRequirement(name = "JWT Access Token")
     fun deleteCommunity(
         @RequestHeader("Authorization") authorization: String?,
         @PathVariable name: String

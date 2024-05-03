@@ -5,6 +5,7 @@ import com.communityhub.dto.CommentDto
 import com.communityhub.dto.PostDto
 import com.communityhub.dto.PostWithCommentsDto
 import com.communityhub.service.PostService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/post")
 class PostController(private val postService: PostService) {
     @PostMapping("/create")
+    @SecurityRequirement(name = "JWT Access Token")
     fun createPost(
         @RequestHeader("Authorization") authorization: String?,
         @RequestBody postDto: PostDto
@@ -32,6 +34,7 @@ class PostController(private val postService: PostService) {
     }
 
     @PostMapping("/{id}/comment")
+    @SecurityRequirement(name = "JWT Access Token")
     fun createComment(
         @PathVariable id: Long,
         @RequestHeader("Authorization") authorization: String?,
@@ -51,6 +54,7 @@ class PostController(private val postService: PostService) {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "JWT Access Token")
     fun deletePost(
         @PathVariable id: Long,
         @RequestHeader("Authorization") authorization: String?
