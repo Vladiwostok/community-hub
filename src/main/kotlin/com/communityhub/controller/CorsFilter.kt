@@ -13,6 +13,7 @@ class CorsFilter : Filter {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
         val res = response as HttpServletResponse
         res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+        res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*")
         chain?.doFilter(request, response)
     }
 }
