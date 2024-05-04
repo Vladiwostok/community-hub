@@ -14,6 +14,7 @@ class CorsFilter : Filter {
         val res = response as HttpServletResponse
         res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
         res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*")
+        res.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*")
         chain?.doFilter(request, response)
     }
 }
