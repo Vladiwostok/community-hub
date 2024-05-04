@@ -26,7 +26,6 @@ class LogInController(private val cHubUserService: CHubUserService) {
             val token = cHubUserService.updateUserJwtToken(name)
             ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
                 .build()
         } catch (e: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
